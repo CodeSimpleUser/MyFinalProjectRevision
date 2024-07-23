@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using FluentValidation.Results;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +13,7 @@ namespace Core.Extensions
     {
         public string Message { get; set; }
         public int StatusCode { get; set; }
+        public IEnumerable<ValidationFailure> Errors{ get; set; }
 
         public override string ToString()
         {

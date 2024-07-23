@@ -5,6 +5,7 @@ using Business.Concrete;
 using Castle.Core.Logging;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
+//using Core.Utilities.Security.Cookies;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstact;
 using DataAccess.Concrete.EntitiyFramework;
@@ -36,7 +37,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfUserDal>().As<IUserDal>();
 
             builder.RegisterType<AuthManager>().As<IAuthService>();
-            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+            //builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+            //builder.RegisterType<SessionIdHandler>().As<ISessionHelper>();
 
           
 

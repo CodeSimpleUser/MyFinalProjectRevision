@@ -1,12 +1,15 @@
 ﻿using Core.Entities.Concrete;
 using Core.Utilities.Results;
+//using Core.Utilities.Security.Cookies;
 using Core.Utilities.Security.JWT;
 using Entities.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Business.Abstract
 {
@@ -16,5 +19,8 @@ namespace Business.Abstract
         IDataResult<User> Login(UserForLoginDto userForLoginDto);
         IResult UserExists(string email);
         IDataResult<AccessToken> CreateAccessToken(User user);
+        IDataResult<AccessToken> UpdateAccessToken(User user);
+
+     
     }
 }

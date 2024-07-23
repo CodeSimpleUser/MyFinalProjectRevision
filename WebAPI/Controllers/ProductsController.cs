@@ -2,6 +2,7 @@
 using Business.Concrete;
 using DataAccess.Concrete.EntitiyFramework;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,8 @@ namespace WebAPI.Controllers
         {
             _productService = productService;
         }//                                                                            ]
+
+        [Authorize]
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
@@ -51,7 +54,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result.Message);
         }
-
+        [Authorize]
         // silme ve ekleme için post kullanılıyor genelde , güncellemeler için  Httpput kullanılıyor imiş.
         [HttpPost("add")]
         public IActionResult Add(Product product)

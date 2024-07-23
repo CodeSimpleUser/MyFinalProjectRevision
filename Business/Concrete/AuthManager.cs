@@ -2,12 +2,17 @@
 using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
+//using Core.Utilities.Security.Cookies;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
 using Entities.DTO;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,11 +22,13 @@ namespace Business.Concrete
     {
         private IUserService _userService;
         private ITokenHelper _tokenHelper;
+    
+    
 
         public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
             _userService = userService;
-            _tokenHelper = tokenHelper;
+            _tokenHelper = tokenHelper;           
         }
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
@@ -46,16 +53,17 @@ namespace Business.Concrete
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
             if (userToCheck == null)
             {
-                return new ErrorDataResult<User>();
+                return new ErrorDataResult<User>(Messages.UserNotFound);
             }
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
             {
-                return new ErrorDataResult<User>();
+                return new ErrorDataResult<User>(Messages.PasswordError);
             }
 
             return new SuccessDataResult<User>(userToCheck, Messages.SuccessfulLogin);
         }
+        
 
         public IResult UserExists(string email)
         {
@@ -67,10 +75,29 @@ namespace Business.Concrete
         }
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
-        {
+        {   
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }
+
+    
+        public string UpdateAccessToken()
+        {
+            var randomNumber = new byte[64];
+
+            using (var numberGenerator = RandomNumberGenerator.Create())
+            {
+                numberGenerator.GetBytes(randomNumber);
+            }
+            return Convert.ToBase64String(randomNumber);
+        }
+
+        public IDataResult<AccessToken> UpdateAccessToken(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+       
     }
 }

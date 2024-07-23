@@ -2,6 +2,8 @@
 using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstact;
@@ -25,9 +27,9 @@ namespace Business.Concrete
 
         //[CacheAspect(1)]
         //[SecuredOperation("product.add,admin")]
-        //[ValidationAspect(typeof(ProductValidator))]
+        [ValidationAspect(typeof(ProductValidator))]
         //[TransactionScopeAspect]
-        //[CacheRemoveAspect("IProductService.Get")
+        [CacheRemoveAspect("IProductService.Get")]
 
         public IResult Add(Product product)
         {
@@ -56,11 +58,11 @@ namespace Business.Concrete
         public IDataResult<List<Product>> GetAll()
         {
 
-            //if (DateTime.Now.Hour < 18)
+            //if (DateTime.Now.Hour > 18 || DateTime.Now.Hour < 8)
             //{
             //    return new ErrorDataResult<List<Product>>(Messages.MaintanenceTime);
             //}
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductAdded);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.AllProducts);
         }
 
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
@@ -86,8 +88,8 @@ namespace Business.Concrete
         //    }
         //    return new SuccessDataResult<List<ProductDetailsDto>>(_productDal.GetProductDetails());
         //}
-        //[CacheRemoveAspect("IProductService.Get")]
-        //[TransactionScopeAspect()]
+        [CacheRemoveAspect("IProductService.Get")]
+        
 
         public IResult Update(Product product)
         {
