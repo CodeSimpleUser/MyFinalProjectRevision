@@ -4,6 +4,18 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 
+🛠 Teknik Yığın (Tech Stack)
 
+Runtime: .NET 8 / 9
 
-This is the project that i have ever done.
+Architecture: Clean Architecture 
+
+Database: MSSQL
+
+Auth: JWT 
+
+Logging: Log4Net
+
+Mapping: AutoMapper / Mapster
+
+Validation: FluentValidation
